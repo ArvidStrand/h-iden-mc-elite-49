@@ -1,29 +1,23 @@
 import { useState, useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { Menu, X, Phone, Facebook } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-
-const navLinks = [
-  { label: "Hjem", href: "#hjem" },
-  { label: "Verksted", href: "#verksted" },
-  { label: "Vinterlagring", href: "#vinterlagring" },
-  { label: "MC til salgs", href: "#salgs" },
-  { label: "MC-turer", href: "#turer" },
-  { label: "Om oss", href: "#om-oss" },
-  { label: "Kontakt", href: "#kontakt" },
-];
-
-const FACEBOOK_URL =
-  "https://www.facebook.com/H%C3%98IDEN-MC-SENTER-413669762737";
+import { NAV_LINKS, FACEBOOK_URL, PHONE_NUMBER, PHONE_DISPLAY } from "@/lib/constants";
 
 export const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  useEffect(() => {
+    setMobileOpen(false);
+  }, [location.pathname]);
 
   return (
     <header
@@ -34,35 +28,39 @@ export const Navbar = () => {
       }`}
     >
       <div className="container mx-auto px-4 flex items-center justify-between">
-        <a
-          href="#hjem"
+        <Link
+          to="/"
           className="font-display text-2xl md:text-3xl tracking-wider text-foreground transition-all"
         >
           HØIDEN{" "}
           <span className="text-primary">MC</span>
           -SENTER
-        </a>
+        </Link>
 
         <nav className="hidden lg:flex items-center gap-1">
-          {navLinks.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              className="px-3 py-2 text-xs font-semibold text-muted-foreground hover:text-primary transition-colors uppercase tracking-widest relative group"
+          {NAV_LINKS.map((link) => (
+            <Link
+              key={link.to}
+              to={link.to}
+              className={`px-3 py-2 text-xs font-semibold hover:text-primary transition-colors uppercase tracking-widest relative group ${
+                location.pathname === link.to
+                  ? "text-primary"
+                  : "text-muted-foreground"
+              }`}
             >
               {link.label}
               <span className="absolute bottom-0 left-3 right-3 h-px bg-primary scale-x-0 group-hover:scale-x-100 transition-transform origin-left" />
-            </a>
+            </Link>
           ))}
         </nav>
 
         <div className="hidden lg:flex items-center gap-3">
           <a
-            href="tel:+4769236040"
+            href={`tel:${PHONE_NUMBER}`}
             className="flex items-center gap-2 bg-primary text-primary-foreground px-5 py-2.5 rounded text-sm font-bold tracking-wide hover:bg-primary/90 transition-all shadow-lg shadow-primary/20"
           >
             <Phone className="w-4 h-4" />
-            69 23 60 40
+            {PHONE_DISPLAY}
           </a>
           <a
             href={FACEBOOK_URL}
@@ -94,23 +92,26 @@ export const Navbar = () => {
             className="lg:hidden overflow-hidden bg-background/98 backdrop-blur-xl border-t border-border"
           >
             <nav className="container mx-auto px-4 py-6 flex flex-col gap-1">
-              {navLinks.map((link) => (
-                <a
-                  key={link.href}
-                  href={link.href}
-                  onClick={() => setMobileOpen(false)}
-                  className="py-3 px-4 text-sm font-semibold text-foreground hover:text-primary hover:bg-secondary/50 rounded transition-all uppercase tracking-widest"
+              {NAV_LINKS.map((link) => (
+                <Link
+                  key={link.to}
+                  to={link.to}
+                  className={`py-3 px-4 text-sm font-semibold hover:text-primary hover:bg-secondary/50 rounded transition-all uppercase tracking-widest ${
+                    location.pathname === link.to
+                      ? "text-primary bg-secondary/30"
+                      : "text-foreground"
+                  }`}
                 >
                   {link.label}
-                </a>
+                </Link>
               ))}
               <div className="mt-4 pt-4 border-t border-border flex items-center gap-3">
                 <a
-                  href="tel:+4769236040"
+                  href={`tel:${PHONE_NUMBER}`}
                   className="flex-1 flex items-center justify-center gap-2 bg-primary text-primary-foreground px-5 py-3 rounded text-sm font-bold tracking-wide"
                 >
                   <Phone className="w-4 h-4" />
-                  69 23 60 40
+                  {PHONE_DISPLAY}
                 </a>
                 <a
                   href={FACEBOOK_URL}
