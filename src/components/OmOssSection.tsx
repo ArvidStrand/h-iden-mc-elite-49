@@ -1,5 +1,9 @@
 import { motion } from "framer-motion";
-import { Clock, MapPin, Mail, Phone } from "lucide-react";
+import { Clock, MapPin, Mail, Phone, Download } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { PageHero } from "@/components/PageHero";
+import { downloadVCard } from "@/lib/vcard";
+import { PHONE_NUMBER, PHONE_DISPLAY, EMAIL, ADDRESS, MAPS_URL } from "@/lib/constants";
 import lokaletImg from "@/assets/lokalet.png";
 
 const hours = [
@@ -10,179 +14,246 @@ const hours = [
 
 const staff = [
   {
-    name: "Daglig leder",
-    role: "Salg & administrasjon",
-    email: "post@hoiden-mc.no",
-    initials: "HL",
+    firstName: "Jørn Freddy",
+    lastName: "Kristiansen",
+    role: "Daglig leder",
+    email: "freddy@hoiden-mc.no",
+    initials: "JFK",
   },
   {
-    name: "Verkstedleder",
-    role: "Service & reparasjoner",
-    email: "verksted@hoiden-mc.no",
-    initials: "VL",
+    firstName: "Aleksander",
+    lastName: "Snellingen Ormvold",
+    role: "Kundemottak verksted / delelager / salg",
+    email: "aleksander@hoiden-mc.no",
+    initials: "ASO",
+  },
+  {
+    firstName: "Jesper",
+    lastName: "Fekjær",
+    role: "Mekaniker",
+    email: "jesper@hoiden-mc.no",
+    initials: "JF",
+  },
+  {
+    firstName: "Thomas",
+    lastName: "Berg",
+    role: "Verksmester",
+    email: "thomas@hoiden-mc.no",
+    initials: "TB",
   },
 ];
 
 export const OmOssSection = () => {
   return (
-    <section id="om-oss" className="py-24 scroll-mt-20 bg-secondary/20">
-      <div className="container mx-auto px-4">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="text-center mb-16"
-        >
-          <h2 className="font-display text-4xl md:text-5xl tracking-wider text-chrome mb-4">
-            Om oss
-          </h2>
-          <div className="section-divider mb-6" />
-        </motion.div>
+    <>
+      <PageHero
+        title="Om oss"
+        subtitle="Din MC-partner i Østfold siden 1986"
+        backgroundImage={lokaletImg}
+      />
 
-        <div className="grid lg:grid-cols-2 gap-12 items-start mb-16">
-          {/* History & Image */}
+      <section className="py-24">
+        <div className="container mx-auto px-4">
+          {/* Åpningstider */}
           <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
+            className="max-w-2xl mx-auto bg-card border border-border rounded-lg p-8 mb-20"
           >
-            <div className="relative rounded-lg overflow-hidden mb-8">
-              <img
-                src={lokaletImg}
-                alt="Høiden MC-Senter fasade i Dilling"
-                className="w-full h-[350px] object-cover"
-                loading="lazy"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-background/60 to-transparent" />
+            <div className="flex items-center gap-3 mb-6">
+              <Clock className="w-6 h-6 text-primary" />
+              <h2 className="font-display text-3xl tracking-wider text-foreground">
+                Våre åpningstider
+              </h2>
             </div>
-            <h3 className="font-display text-3xl tracking-wider text-foreground mb-4">
-              Siden 1986
-            </h3>
-            <p className="text-muted-foreground font-body leading-relaxed mb-4">
-              Høiden MC-Senter AS har vært et samlingspunkt for motorsykkelentusiaster
-              i Østfold siden 1986. Strategisk plassert i Dilling, like ved Moss og Rygge,
-              har vi bygget opp et solid rykte for kvalitet, kompetanse og hyggelig
-              kundebehandling.
-            </p>
-            <p className="text-muted-foreground font-body leading-relaxed">
-              Som autorisert Honda og Yamaha forhandler tilbyr vi et komplett utvalg
-              av nye og brukte motorsykler, deler, tilbehør og profesjonelle
-              verkstedtjenester. Vårt erfarne team brenner for MC og gir deg alltid
-              den beste servicen.
-            </p>
+            <table className="w-full">
+              <tbody>
+                {hours.map((h) => (
+                  <tr key={h.day} className="border-b border-border last:border-0">
+                    <td className="py-4 text-sm font-body text-foreground/80">
+                      {h.day}
+                    </td>
+                    <td
+                      className={`py-4 text-sm font-body text-right font-semibold ${
+                        h.time === "Stengt" ? "text-primary" : "text-foreground"
+                      }`}
+                    >
+                      {h.time}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </motion.div>
 
-          {/* Hours & Staff */}
-          <div className="space-y-8">
-            {/* Opening hours */}
+          {/* Hvem vi er */}
+          <div className="grid lg:grid-cols-2 gap-16 items-start mb-20">
             <motion.div
-              initial={{ opacity: 0, x: 30 }}
+              initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              className="bg-card border border-border rounded-lg p-8"
             >
-              <div className="flex items-center gap-3 mb-6">
-                <Clock className="w-6 h-6 text-primary" />
-                <h3 className="font-display text-2xl tracking-wider text-foreground">
-                  Åpningstider
-                </h3>
-              </div>
-              <table className="w-full">
-                <tbody>
-                  {hours.map((h) => (
-                    <tr key={h.day} className="border-b border-border last:border-0">
-                      <td className="py-3 text-sm font-body text-foreground/80">
-                        {h.day}
-                      </td>
-                      <td
-                        className={`py-3 text-sm font-body text-right font-semibold ${
-                          h.time === "Stengt"
-                            ? "text-primary"
-                            : "text-foreground"
-                        }`}
-                      >
-                        {h.time}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </motion.div>
-
-            {/* Contact info */}
-            <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.1 }}
-              className="bg-card border border-border rounded-lg p-8"
-            >
-              <h3 className="font-display text-2xl tracking-wider text-foreground mb-6">
-                Kontaktinfo
-              </h3>
-              <div className="space-y-4">
-                <a
-                  href="https://maps.google.com/?q=Ryggeveien+121,+1570+Dilling"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-start gap-3 text-sm font-body text-muted-foreground hover:text-primary transition-colors"
-                >
-                  <MapPin className="w-4 h-4 mt-0.5 shrink-0 text-primary" />
-                  Ryggeveien 121, 1570 Dilling
-                </a>
-                <a
-                  href="tel:+4769236040"
-                  className="flex items-center gap-3 text-sm font-body text-muted-foreground hover:text-primary transition-colors"
-                >
-                  <Phone className="w-4 h-4 shrink-0 text-primary" />
-                  69 23 60 40
-                </a>
-                <a
-                  href="mailto:post@hoiden-mc.no"
-                  className="flex items-center gap-3 text-sm font-body text-muted-foreground hover:text-primary transition-colors"
-                >
-                  <Mail className="w-4 h-4 shrink-0 text-primary" />
-                  post@hoiden-mc.no
-                </a>
+              <div className="relative rounded-lg overflow-hidden mb-8">
+                <img
+                  src={lokaletImg}
+                  alt="Høiden MC-Senter fasade i Dilling"
+                  className="w-full h-[350px] object-cover"
+                  loading="lazy"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-background/60 to-transparent" />
               </div>
             </motion.div>
 
-            {/* Staff */}
             <motion.div
               initial={{ opacity: 0, x: 30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: 0.2 }}
-              className="grid grid-cols-2 gap-4"
+              className="space-y-10"
             >
-              {staff.map((person) => (
-                <div
-                  key={person.name}
-                  className="bg-card border border-border rounded-lg p-6 text-center hover:border-primary/30 transition-all"
-                >
-                  <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
-                    <span className="font-display text-xl text-primary">
-                      {person.initials}
-                    </span>
-                  </div>
-                  <h4 className="font-display text-lg tracking-wider text-foreground mb-1">
-                    {person.name}
-                  </h4>
-                  <p className="text-muted-foreground text-xs font-body mb-3">
-                    {person.role}
-                  </p>
-                  <a
-                    href={`mailto:${person.email}`}
-                    className="text-primary text-xs font-body hover:underline"
-                  >
-                    {person.email}
-                  </a>
-                </div>
-              ))}
+              {/* Hvem vi er */}
+              <div>
+                <h2 className="font-display text-3xl md:text-4xl tracking-wider text-chrome mb-4">
+                  Hvem vi er
+                </h2>
+                <div className="w-16 h-0.5 bg-primary mb-6" />
+                <p className="text-muted-foreground font-body leading-relaxed">
+                  Helt siden oppstarten i 1986, har Høiden MC-Senter hatt som målsetning å
+                  være en av ledende MC-sentere i Norge, både på utvalg og kvalitet. Hos oss
+                  vil du finne et bredt spekter av både nye og brukte mopeder, scootere,
+                  motorsykler. Vi har valgt kjente leverandører både på kjøretøy og
+                  reservedeler, bekledning og service.
+                </p>
+              </div>
+
+              {/* Hva vi gjør */}
+              <div>
+                <h2 className="font-display text-3xl md:text-4xl tracking-wider text-chrome mb-4">
+                  Hva vi gjør
+                </h2>
+                <div className="w-16 h-0.5 bg-primary mb-6" />
+                <p className="text-muted-foreground font-body leading-relaxed">
+                  Vi er forhandler av mopeder og motorsykler og er et velrennomert autorisert
+                  motorsykkelverksted.
+                </p>
+              </div>
+
+              {/* Hvor vi er */}
+              <div>
+                <h2 className="font-display text-3xl md:text-4xl tracking-wider text-chrome mb-4">
+                  Hvor vi er
+                </h2>
+                <div className="w-16 h-0.5 bg-primary mb-6" />
+                <p className="text-muted-foreground font-body leading-relaxed">
+                  Du finner vårt MC-senter og verksted lett tilgjengelig i Ryggeveien 121
+                  mellom Rygge og Moss, i Østfold. Vi har et topp moderne verksted med
+                  oppdatert utstyr og tilbyr vinterlagring for moped og MC kjøretøy.
+                </p>
+              </div>
             </motion.div>
           </div>
+
+          {/* Contact info */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="max-w-2xl mx-auto bg-card border border-border rounded-lg p-8 mb-20"
+          >
+            <h3 className="font-display text-2xl tracking-wider text-foreground mb-6">
+              Kontaktinfo
+            </h3>
+            <div className="space-y-4">
+              <a
+                href={MAPS_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-start gap-3 text-sm font-body text-muted-foreground hover:text-primary transition-colors"
+              >
+                <MapPin className="w-4 h-4 mt-0.5 shrink-0 text-primary" />
+                {ADDRESS}
+              </a>
+              <a
+                href={`tel:${PHONE_NUMBER}`}
+                className="flex items-center gap-3 text-sm font-body text-muted-foreground hover:text-primary transition-colors"
+              >
+                <Phone className="w-4 h-4 shrink-0 text-primary" />
+                {PHONE_DISPLAY}
+              </a>
+              <a
+                href={`mailto:${EMAIL}`}
+                className="flex items-center gap-3 text-sm font-body text-muted-foreground hover:text-primary transition-colors"
+              >
+                <Mail className="w-4 h-4 shrink-0 text-primary" />
+                {EMAIL}
+              </a>
+            </div>
+          </motion.div>
+
+          {/* Våre ansatte */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            <h2 className="font-display text-4xl md:text-5xl tracking-wider text-chrome text-center mb-4">
+              Våre ansatte
+            </h2>
+            <div className="section-divider mb-12" />
+          </motion.div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {staff.map((person, i) => (
+              <motion.div
+                key={person.email}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1 }}
+                className="bg-card border border-border rounded-lg p-6 text-center hover:border-primary/30 transition-all"
+              >
+                <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
+                  <span className="font-display text-2xl text-primary">
+                    {person.initials}
+                  </span>
+                </div>
+                <h4 className="font-display text-xl tracking-wider text-foreground mb-1">
+                  {person.firstName} {person.lastName}
+                </h4>
+                <p className="text-muted-foreground text-xs font-body mb-4">
+                  {person.role}
+                </p>
+                <div className="space-y-2">
+                  <a
+                    href={`mailto:${person.email}`}
+                    className="flex items-center justify-center gap-2 text-primary text-xs font-body hover:underline"
+                  >
+                    <Mail className="w-3 h-3" />
+                    {person.email}
+                  </a>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="text-xs text-muted-foreground hover:text-primary w-full"
+                    onClick={() =>
+                      downloadVCard({
+                        firstName: person.firstName,
+                        lastName: person.lastName,
+                        role: person.role,
+                        email: person.email,
+                        phone: "+4769236040",
+                      })
+                    }
+                  >
+                    <Download className="w-3 h-3 mr-1" />
+                    Last ned vCard
+                  </Button>
+                </div>
+              </motion.div>
+            ))}
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </>
   );
 };

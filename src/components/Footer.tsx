@@ -1,17 +1,16 @@
+import { Link } from "react-router-dom";
 import { Phone, Mail, MapPin, Facebook, ExternalLink } from "lucide-react";
-
-const quickLinks = [
-  { label: "Hjem", href: "#hjem" },
-  { label: "Verksted", href: "#verksted" },
-  { label: "Vinterlagring", href: "#vinterlagring" },
-  { label: "MC til salgs", href: "#salgs" },
-  { label: "MC-turer", href: "#turer" },
-  { label: "Om oss", href: "#om-oss" },
-  { label: "Kontakt", href: "#kontakt" },
-];
-
-const FACEBOOK_URL =
-  "https://www.facebook.com/H%C3%98IDEN-MC-SENTER-413669762737";
+import {
+  NAV_LINKS,
+  FACEBOOK_URL,
+  PHONE_NUMBER,
+  PHONE_DISPLAY,
+  EMAIL,
+  ADDRESS,
+  MAPS_URL,
+  FINN_URL,
+  BRANDS,
+} from "@/lib/constants";
 
 export const Footer = () => {
   return (
@@ -20,13 +19,31 @@ export const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
           {/* Brand */}
           <div>
-            <h3 className="font-display text-2xl tracking-wider text-foreground mb-4">
-              HØIDEN <span className="text-primary">MC</span>-SENTER
-            </h3>
+            <Link to="/" className="block mb-4">
+              <h3 className="font-display text-2xl tracking-wider text-foreground">
+                HØIDEN <span className="text-primary">MC</span>-SENTER
+              </h3>
+            </Link>
             <p className="text-muted-foreground text-sm font-body leading-relaxed mb-4">
-              Autorisert Honda & Yamaha forhandler og verksted. Din pålitelige
+              Autorisert Honda, Yamaha & Kymco forhandler og verksted. Din pålitelige
               MC-partner i Østfold siden 1986.
             </p>
+            {/* Brands */}
+            <div className="mb-4">
+              <p className="text-xs font-body text-muted-foreground uppercase tracking-widest mb-2">
+                Merker
+              </p>
+              <div className="flex gap-3">
+                {BRANDS.map((brand) => (
+                  <span
+                    key={brand}
+                    className="font-display text-sm tracking-wider text-foreground bg-secondary px-3 py-1 rounded"
+                  >
+                    {brand}
+                  </span>
+                ))}
+              </div>
+            </div>
             <div className="flex gap-3">
               <a
                 href={FACEBOOK_URL}
@@ -46,14 +63,14 @@ export const Footer = () => {
               Snarveier
             </h4>
             <ul className="space-y-2">
-              {quickLinks.map((link) => (
-                <li key={link.href}>
-                  <a
-                    href={link.href}
+              {NAV_LINKS.map((link) => (
+                <li key={link.to}>
+                  <Link
+                    to={link.to}
                     className="text-muted-foreground text-sm font-body hover:text-primary transition-colors"
                   >
                     {link.label}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -66,27 +83,27 @@ export const Footer = () => {
             </h4>
             <div className="space-y-3">
               <a
-                href="https://maps.google.com/?q=Ryggeveien+121,+1570+Dilling"
+                href={MAPS_URL}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-start gap-2 text-muted-foreground text-sm font-body hover:text-primary transition-colors"
               >
                 <MapPin className="w-4 h-4 mt-0.5 shrink-0" />
-                Ryggeveien 121, 1570 Dilling
+                {ADDRESS}
               </a>
               <a
-                href="tel:+4769236040"
+                href={`tel:${PHONE_NUMBER}`}
                 className="flex items-center gap-2 text-muted-foreground text-sm font-body hover:text-primary transition-colors"
               >
                 <Phone className="w-4 h-4 shrink-0" />
-                69 23 60 40
+                {PHONE_DISPLAY}
               </a>
               <a
-                href="mailto:post@hoiden-mc.no"
+                href={`mailto:${EMAIL}`}
                 className="flex items-center gap-2 text-muted-foreground text-sm font-body hover:text-primary transition-colors"
               >
                 <Mail className="w-4 h-4 shrink-0" />
-                post@hoiden-mc.no
+                {EMAIL}
               </a>
             </div>
           </div>
@@ -111,7 +128,7 @@ export const Footer = () => {
               </div>
             </div>
             <a
-              href="https://www.finn.no/pw/search/mc?orgId=277933529"
+              href={FINN_URL}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-1 mt-4 text-primary text-xs font-body hover:underline"
@@ -128,7 +145,7 @@ export const Footer = () => {
             © {new Date().getFullYear()} Høiden MC-Senter AS. Alle rettigheter reservert.
           </p>
           <p className="text-muted-foreground/60 text-xs font-body">
-            Ryggeveien 121, 1570 Dilling, Østfold, Norge
+            {ADDRESS}, Østfold, Norge
           </p>
         </div>
       </div>

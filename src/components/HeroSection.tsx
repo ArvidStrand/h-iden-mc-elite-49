@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -5,7 +6,7 @@ import heroBike from "@/assets/hero-bike.png";
 
 export const HeroSection = () => {
   return (
-    <section id="hjem" className="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background with Ken Burns */}
       <div className="absolute inset-0">
         <img
@@ -55,7 +56,7 @@ export const HeroSection = () => {
           transition={{ duration: 0.8, delay: 0.7 }}
           className="font-body text-sm text-muted-foreground max-w-xl mx-auto mb-10"
         >
-          Autorisert Honda & Yamaha forhandler — Salg, service, vinterlagring og MC-opplevelser
+          Autorisert Honda, Yamaha & Kymco forhandler — Salg, service, vinterlagring og MC-opplevelser
         </motion.p>
 
         <motion.div
@@ -65,10 +66,10 @@ export const HeroSection = () => {
           className="flex flex-col sm:flex-row items-center justify-center gap-4"
         >
           <Button variant="cta" size="lg" asChild>
-            <a href="#verksted">Bestill service</a>
+            <Link to="/kontakt?emne=service">Bestill service</Link>
           </Button>
           <Button variant="outline-light" size="lg" asChild>
-            <a href="#salgs">Se motorsykler til salgs</a>
+            <Link to="/mc-til-salgs">Se motorsykler til salgs</Link>
           </Button>
         </motion.div>
       </div>
@@ -80,14 +81,10 @@ export const HeroSection = () => {
         transition={{ delay: 1.5 }}
         className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10"
       >
-        <a
-          href="#tjenester"
-          className="flex flex-col items-center gap-2 text-muted-foreground hover:text-primary transition-colors"
-          aria-label="Scroll ned"
-        >
+        <div className="flex flex-col items-center gap-2 text-muted-foreground">
           <span className="text-xs tracking-widest uppercase font-body">Utforsk</span>
           <ChevronDown className="w-5 h-5 animate-bounce" />
-        </a>
+        </div>
       </motion.div>
     </section>
   );

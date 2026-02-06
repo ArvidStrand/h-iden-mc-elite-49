@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Wrench, Snowflake, Bike, Route } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -7,28 +8,28 @@ const services = [
     icon: Wrench,
     title: "Verksted",
     description: "Autorisert Honda & Yamaha verksted med erfarne mekanikere og moderne utstyr.",
-    href: "#verksted",
+    to: "/verksted",
     cta: "Se tjenester",
   },
   {
     icon: Snowflake,
     title: "Vinterlagring",
     description: "Trygg og sikker oppbevaring av din motorsykkel gjennom vinteren.",
-    href: "#vinterlagring",
+    to: "/vinterlagring",
     cta: "Se priser",
   },
   {
     icon: Bike,
     title: "MC til salgs",
     description: "Stort utvalg av brukte og nye motorsykler. Finansiering tilgjengelig.",
-    href: "#salgs",
+    to: "/mc-til-salgs",
     cta: "Se utvalget",
   },
   {
     icon: Route,
     title: "MC-turer",
     description: "Bli med på blåturer og sosiale kjøreopplevelser med hyggelige MC-folk.",
-    href: "#turer",
+    to: "/mc-turer-og-aktiviteter",
     cta: "Les mer",
   },
 ];
@@ -45,7 +46,7 @@ const cardVariants = {
 
 export const ServicesSection = () => {
   return (
-    <section id="tjenester" className="py-24 carbon-texture scroll-mt-20">
+    <section className="py-24 carbon-texture">
       <div className="container mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -85,7 +86,7 @@ export const ServicesSection = () => {
                 {service.description}
               </p>
               <Button variant="outline-light" size="sm" asChild>
-                <a href={service.href}>{service.cta}</a>
+                <Link to={service.to}>{service.cta}</Link>
               </Button>
             </motion.div>
           ))}
